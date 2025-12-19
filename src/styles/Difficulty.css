@@ -1,0 +1,53 @@
+.App {
+  color: black;
+}
+
+h1, p {
+  text-align: center;
+}
+
+.difficulty-select {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 4.2rem;
+  border-radius: 8px;
+  border: solid;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  height: 40rem;
+  width: 25rem;
+}
+
+button:hover {
+  background: #3a3a3a;
+  transform: scale(1.05);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row; /* SIDE BY SIDE */
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.easy:hover {
+  box-shadow: 0 0 14px rgba(0, 255, 100, 0.8);
+}
+
+.medium:hover {
+  box-shadow: 0 0 14px rgba(255, 200, 0, 0.8);
+}
+
+.hard:hover {
+  box-shadow: 0 0 14px rgba(255, 60, 60, 0.8);
+}
