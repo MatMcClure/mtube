@@ -3,6 +3,9 @@ import React, { useEffect, useState, useRef } from "react";
 import "../styles/Home.css";
 //import banner from "../images/banner_img2.png";
 import type { YouTubeVideo } from "../components/youtube";
+import loadingImg from "../images/loading_img.jpg"; 
+import colorgradeImg from "../images/colorgradeimg.png";
+import ColorGradeReveal from "../components/colorgrade";
 
 const PANELS = 3;
 const CHANNEL_ID = "UCrcsK5kCyBSncGzdwWLGoRQ";
@@ -10,42 +13,50 @@ const CHANNEL_ID = "UCrcsK5kCyBSncGzdwWLGoRQ";
 const Home = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const [hovered, setHovered] = useState(false);
 
   // 🔹 Fetch videos
 useEffect(() => {
   const fetchVideos = async () => {
     try {
-      const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
+      const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY!;
+      
+      // 1️⃣ Get uploads playlist
+      const channelRes = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${API_KEY}`
+      );
+      const channelData = await channelRes.json();
+      console.log("Channel status:", channelRes.status);
+      console.log("Channel response:", channelData);
 
-      if (!API_KEY) {
-        console.error("Missing YouTube API key");
+      const uploadsPlaylistId =
+        channelData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
+
+      if (!uploadsPlaylistId) {
+        console.error("No uploads playlist found", channelData);
         return;
       }
 
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=3&order=date&type=video&key=${API_KEY}`
+      // 2️⃣ Get last 3 uploads
+      const videosRes = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=3&key=${API_KEY}`
       );
 
-      const data = await res.json();
+      const videosData = await videosRes.json();
 
-      console.log("YouTube response:", data); // ← keep for debugging
-
-      if (!Array.isArray(data.items)) {
-        console.error("Invalid YouTube response", data);
-        setVideos([]);
+      if (!Array.isArray(videosData.items)) {
+        console.error("Invalid playlist response", videosData);
         return;
       }
 
-      setVideos(data.items);
+      setVideos(videosData.items);
     } catch (err) {
       console.error(err);
-      setVideos([]);
     }
   };
 
   fetchVideos();
 }, []);
-
 
   // 🔹 Horizontal scroll logic (same as before)
   useEffect(() => {
@@ -54,19 +65,27 @@ useEffect(() => {
 
     const onScroll = () => {
       if (!trackRef.current) return;
+
       const section = trackRef.current.parentElement!;
       const start = section.offsetTop;
       const end = start + section.offsetHeight - window.innerHeight;
+      const maxX = window.innerWidth * (PANELS - 1);
 
-      if (window.scrollY >= start && window.scrollY <= end) {
+      if (window.scrollY < start) {
+        targetX = 0; // 🔑 force reset
+      } else if (window.scrollY > end) {
+        targetX = maxX; // 🔑 clamp end
+      } else {
         const progress = (window.scrollY - start) / (end - start);
-        targetX = progress * window.innerWidth * (PANELS - 1);
+        targetX = progress * maxX;
       }
     };
 
     const smooth = () => {
+      if (!trackRef.current) return;
+
       currentX += (targetX - currentX) * 0.08;
-      trackRef.current!.style.transform = `translateX(-${currentX}px)`;
+      trackRef.current.style.transform = `translateX(-${currentX}px)`;
       requestAnimationFrame(smooth);
     };
 
@@ -76,27 +95,45 @@ useEffect(() => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <section className="horizontal-section">
+return (
+  <section className="home-page">
+    <div className="top-logo">
+      <img src={loadingImg} alt="Logo" />
+    </div>
+    <section className={`horizontal-section ${hovered ? "dimmed" : ""}`}>
       <div className="horizontal-track" ref={trackRef}>
-        {videos.map((video) => (
-          <div key={video.id.videoId} className="panel video-panel">
-            <a
-              href={`https://www.youtube.com/watch?v=${video.id.videoId}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                src={video.snippet.thumbnails.high.url}
-                alt={video.snippet.title}
-              />
+        {videos.map((video) => {
+          const videoId = video.snippet.resourceId.videoId;
+          return (
+            <div key={videoId} className="panel video-panel">
+              <div
+                className="video-wrapper"
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+              >
+                <img
+                  className="thumbnail"
+                  src={video.snippet.thumbnails.high.url}
+                  alt={video.snippet.title}
+                />
+                <iframe
+                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`}
+                  allow="autoplay"
+                  title={video.snippet.title}
+                />
+              </div>
               <h3>{video.snippet.title}</h3>
-            </a>
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
+        <section className="colorgrade-section">
+          <ColorGradeReveal src={colorgradeImg}/>
+      </section>
     </section>
+  </section>
   );
 };
+
 
 export default Home;

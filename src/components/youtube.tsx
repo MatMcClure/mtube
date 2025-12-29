@@ -1,9 +1,9 @@
 export type YouTubeVideo = {
-  id: {
-    videoId: string;
-  };
   snippet: {
     title: string;
+    resourceId: {
+      videoId: string;
+    };
     thumbnails: {
       high: {
         url: string;

@@ -1,13 +1,149 @@
-.App {
-  color: black;
+div.home-page {
+  background-color: black;
+  color: white;
 }
 
-h1, p {
-  text-align: center;
+.home-image {
+  width: 80%;             
+  height: 150px;            
+  object-fit: cover;      
+  object-position: center;
+  border-radius: 10px;
 }
 
-button {
-  display: block;
-  margin: 0 auto;
+.top-logo {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  align-items: center;     /* optional, vertical center if you add height */
+  margin: 1rem 0;          /* spacing from top */
+}
+
+.top-logo img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.intro,
+.outro {
+  height: 100vh;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.horizontal-section {
+  height: 200vh; /* controls how long the horizontal scroll lasts */
+  position: relative;
+}
+
+.horizontal-track {
+  display: flex;
+  gap: 2rem; /* keeps spacing between panels */
+  align-items: center;
+  padding-left: 2vw;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0; /* top/right/bottom/left = 0 */
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 12px;
+  border: none;
+  transition: opacity 0.35s ease;
+}
+
+.video-wrapper .thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.video-wrapper img.thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 🔥 removes black bars */
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.panel {
+  flex-shrink: 0; /* prevents panel from shrinking */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem; /* space between thumbnail and title */
+  width: 500px; /* thumbnail width */
+}
+
+.video-panel {
+  width: 800px;
+  height: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  margin-top: 15%;
+}
+
+.video-panel img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.video-panel h3 {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  color: white;
+  font-size: 1.5rem;
+  max-width: 70%;
+}
+
+.video-panel a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+.video-panel:hover iframe {
+  opacity: 1;
+}
+
+.video-panel:hover .thumbnail {
+  opacity: 0;
+  pointer-events: auto;
+}
+
+.colorgrade-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: black; /* keeps cinematic look */
+  padding: 100px 0;
 }
