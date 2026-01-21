@@ -47,6 +47,26 @@ div.home-page {
   padding-left: 2vw;
 }
 
+/* Entire section height = amount needed to trigger horizontal scroll */
+.horizontal-gear-section {
+  height: 150vh;
+  position: relative;
+  overflow: hidden;
+  background: black;
+  display: flex;
+  align-items: center;
+}
+
+/* Track slides horizontally */
+.horizontal-gear-track {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  transform: translateX(0);
+  transition: transform 0.2s ease-out;
+}
+
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -171,4 +191,47 @@ div.home-page {
   color: #cccccc;
   text-align: center;
   line-height: 2.5rem;
+}
+
+/* The single panel containing your gear grid */
+.gear-panel {
+  min-width: 100vw;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 2 × 4 GRID */
+.gear-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  gap: 50px;
+}
+
+/* Gear item styling */
+.gear-item {
+  width: 200px;
+  height: 200px;
+  border: 2px solid #555;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  background: transparent;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.gear-item-img {
+  width: 200px;     /* adjust as needed */
+  height: 200px;
+  object-fit: contain;
+}
+
+.gear-item:hover {
+  transform: scale(1.12);     /* pop-out */
 }
