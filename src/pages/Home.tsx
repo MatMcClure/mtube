@@ -166,7 +166,9 @@ const Home = () => {
 return (
   <section className="home-page">
     <div className="top-logo">
-      <img src={loadingImg} alt="Logo" />
+      <a href="https://www.youtube.com/@mxclur" target="_blank" rel="noopener noreferrer">
+        <img src={loadingImg} alt="Logo" />
+      </a>
     </div>
     <section className={`horizontal-section ${hovered ? "dimmed" : ""}`}>
       <div className="horizontal-track" ref={trackRef}>
@@ -245,5 +247,6 @@ return (
     </section>
   );
 };
+
 
 export default Home;
