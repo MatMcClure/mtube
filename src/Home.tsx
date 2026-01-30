@@ -16,7 +16,7 @@ import cameraImg from "../images/camera.png";
 import micImg from "../images/micmini.png";
 //import CameraSettingsSection from "../components/camerasettings";
 
-const PANELS = 6;
+// const PANELS = 6;
 const FULL_VIDEO_COUNT = 6;
 const PLAYLIST_FETCH_COUNT = 15;
 const CHANNEL_ID = "UCrcsK5kCyBSncGzdwWLGoRQ";
@@ -29,6 +29,17 @@ const Home = () => {
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [hovered, setHovered] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
+
+  const chunkVideos = (videos: YouTubeVideo[], size: number) => {
+  const chunks = [];
+    for (let i = 0; i < videos.length; i += size) {
+      chunks.push(videos.slice(i, i + size));
+    }
+    return chunks;
+  };
+
+  const videoPanels = chunkVideos(videos, 6);
+
 
   // 🔹 Fetch videos
   useEffect(() => {
@@ -199,30 +210,35 @@ return (
     </div>
     <section className={`horizontal-section ${hovered ? "dimmed" : ""}`}>
       <div className="horizontal-track" ref={trackRef}>
-        {videos.map((video) => {
-          const videoId = video.snippet.resourceId.videoId;
-          return (
-            <div key={videoId} className="panel video-panel">
-              <div
-                className="video-wrapper"
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-              >
-                <img
-                  className="thumbnail"
-                  src={video.snippet.thumbnails.high.url}
-                  alt={video.snippet.title}
-                />
-                <iframe
-                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`}
-                  allow="autoplay"
-                  title={video.snippet.title}
-                />
-              </div>
-              <h3>{video.snippet.title}</h3>
+        {videoPanels.map((panelVideos, panelIndex) => (
+          <div key={panelIndex} className="panel video-grid-panel">
+            <div className="video-grid">
+              {panelVideos.map((video) => {
+                const videoId = video.snippet.resourceId.videoId;
+
+                return (
+                  <div
+                    key={videoId}
+                    className="video-wrapper"
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                  >
+                    <img
+                      className="thumbnail"
+                      src={video.snippet.thumbnails.high.url}
+                      alt={video.snippet.title}
+                    />
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}`}
+                      allow="autoplay"
+                      title={video.snippet.title}
+                    />
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
     </section>
       <section
