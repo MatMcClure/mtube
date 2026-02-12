@@ -46,7 +46,7 @@ div.home-page {
   padding-left: 36vw;
 }
 
-/* Entire section height = amount needed to trigger horizontal scroll */
+/* Entire section height = amount needed to trigger horizontal scroll
 .horizontal-gear-section {
   height: 150vh;
   position: relative;
@@ -57,13 +57,34 @@ div.home-page {
 }
 
 /* Track slides horizontally */
-.horizontal-gear-track {
+/* .horizontal-gear-track {
   position: sticky;
   top: 0;
   height: 100vh;
   display: flex;
   transform: translateX(0);
   transition: transform 0.2s ease-out;
+} */ 
+
+.horizontal-camera-section {
+  position: relative;
+  height: 250vh; /* scroll distance */
+}
+
+.horizontal-camera-track {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  width: 200vw; /* panels × 100vw */
+}
+
+.camera-panel {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .video-grid-panel {
@@ -192,26 +213,16 @@ div.home-page {
   pointer-events: auto;
 }
 
-.colorgrade-section {
-  min-height: 300vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: black; /* keeps cinematic look */
-  padding: 100px 0;
-}
-
 .camera-settings-section {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-  min-height: 100vh;
+  min-height: auto;
   padding: 120px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  margin-top: -1000px;
 }
 
 .camera-settings-section.show {
@@ -223,25 +234,31 @@ div.home-page {
   font-size: 1.8rem;
   color: #cccccc;
   text-align: center;
-  line-height: 2.5rem;
+  line-height: 1.5rem;
 }
 
-/* The single panel containing your gear grid */
 .gear-panel {
   min-width: 100vw;
   height: 50vh;
-  display: flex;
+  display: grid;
+  gap: 50px;
   align-items: center;
   justify-content: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  margin-left: 5%;
+  margin-top: -400px;
 }
 
 /* 2 × 4 GRID */
-.gear-grid {
+/* .gear-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 200px);
   gap: 50px;
-}
+  width: 90vw;
+  max-width: 1200px;
+} */
 
 /* Gear item styling */
 .gear-item {
@@ -267,4 +284,9 @@ div.home-page {
 
 .gear-item:hover {
   transform: scale(1.12);     /* pop-out */
+}
+
+.gear-section {
+  min-height: 100vh;
+  padding: 120px 0;
 }

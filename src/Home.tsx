@@ -39,7 +39,7 @@ const Home = () => {
   };
 
   const videoPanels = chunkVideos(videos, 6);
-
+  // const VIDEO_PANELS = videoPanels.length;
 
   // 🔹 Fetch videos
   useEffect(() => {
@@ -120,21 +120,29 @@ const videoIds = videosData.items
   //     const section = trackRef.current.parentElement!;
   //     const start = section.offsetTop;
   //     const end = start + section.offsetHeight - window.innerHeight;
-  //     const maxX = window.innerWidth * (PANELS - 1);
 
-  //     if (window.scrollY < start) {
-  //       targetX = 0; // 🔑 force reset
-  //     } else if (window.scrollY > end) {
-  //       targetX = maxX; // 🔑 clamp end
-  //     } else {
-  //       const progress = (window.scrollY - start) / (end - start);
-  //       targetX = progress * maxX;
+  //     const maxX = window.innerWidth * (VIDEO_PANELS - 1);
+
+  //     if (window.scrollY <= start) {
+  //       targetX = 0;
+  //       return;
   //     }
+
+  //     if (window.scrollY >= end) {
+  //       targetX = maxX;
+  //       return;
+  //     }
+
+  //     const progress = (window.scrollY - start) / (end - start);
+  //     targetX = progress * maxX;
+
+  //     // 🔹 SNAP PER PANEL
+  //     targetX =
+  //       Math.round(targetX / window.innerWidth) * window.innerWidth;
   //   };
 
   //   const smooth = () => {
   //     if (!trackRef.current) return;
-
   //     currentX += (targetX - currentX) * 0.08;
   //     trackRef.current.style.transform = `translateX(-${currentX}px)`;
   //     requestAnimationFrame(smooth);
@@ -144,24 +152,43 @@ const videoIds = videosData.items
   //   smooth();
 
   //   return () => window.removeEventListener("scroll", onScroll);
-  // }, []);
+  // }, [VIDEO_PANELS]);
+
+  const cameraTrackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!cameraRef.current) return;
+    let currentX = 0;
+    let targetX = 0;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry?.isIntersecting) {
-          setShowCamera(true);
-          observer.disconnect(); // only animate once
-        }
-      },
-      { threshold: 0.2 }
-    );
+    const onScroll = () => {
+      if (!cameraTrackRef.current) return;
 
-    observer.observe(cameraRef.current);
-    return () => observer.disconnect();
+      const section = cameraTrackRef.current.parentElement!;
+      const start = section.offsetTop;
+      const end = start + section.offsetHeight - window.innerHeight;
+      const maxX = window.innerWidth; // 1 panel slide
+
+      if (window.scrollY < start) {
+        targetX = 0;
+      } else if (window.scrollY > end) {
+        targetX = maxX;
+      } else {
+        const progress = (window.scrollY - start) / (end - start);
+        targetX = progress * maxX;
+      }
+    };
+
+    const smooth = () => {
+      if (!cameraTrackRef.current) return;
+      currentX += (targetX - currentX) * 0.08;
+      cameraTrackRef.current.style.transform = `translateX(-${currentX}px)`;
+      requestAnimationFrame(smooth);
+    };
+
+    window.addEventListener("scroll", onScroll);
+    smooth();
+
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -175,20 +202,29 @@ const videoIds = videosData.items
       const start = section.offsetTop;
       const end = start + section.offsetHeight - window.innerHeight;
 
-      const maxX = window.innerWidth * 1; // only ONE gear panel to slide
+      const maxX = window.innerWidth; // ONE panel
 
-      if (window.scrollY < start) {
+      if (window.scrollY <= start) {
         targetX = 0;
-      } else if (window.scrollY > end) {
-        targetX = maxX;
-      } else {
-        const progress = (window.scrollY - start) / (end - start);
-        targetX = progress * maxX;
+        return;
       }
+
+      if (window.scrollY >= end) {
+        targetX = maxX;
+        return;
+      }
+
+      const progress = (window.scrollY - start) / (end - start);
+      targetX = progress * maxX;
+
+      // 🔹 SNAP HERE
+      targetX =
+        Math.round(targetX / window.innerWidth) * window.innerWidth;
     };
 
     const smooth = () => {
       if (!gearTrackRef.current) return;
+
       currentX += (targetX - currentX) * 0.08;
       gearTrackRef.current.style.transform = `translateX(-${currentX}px)`;
       requestAnimationFrame(smooth);
@@ -199,7 +235,6 @@ const videoIds = videosData.items
 
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
 
 return (
   <section className="home-page">
@@ -241,49 +276,54 @@ return (
         ))}
       </div>
     </section>
-      <section
-        ref={cameraRef}
-        className={`camera-settings-section ${showCamera ? "show" : ""}`}
-      >
-        <div className="camera-info">
-          <p>Camera Settings</p>
-          <p>🎥 4K 30 FPS</p>
-          <p>⏱ 1/60 Shutter Angle</p>
-          <p>🌡 ISO 100 ~ 800</p>
-          <p>🪨 RockSteady: Off</p>
+
+    <section className="horizontal-camera-section">
+      <div className="horizontal-camera-track" ref={cameraTrackRef}>
+        <div className="camera-panel">
+          <div className="camera-info">
+            <p>Camera Settings</p>
+            <p>🎥 4K 30 FPS</p>
+            <p>⏱ 1/60 Shutter Angle</p>
+            <p>🌡 ISO 100 ~ 800</p>
+            <p>🪨 RockSteady: Off</p>
+          </div>
+          <ColorGradeReveal src={colorgradeImg} />
         </div>
 
-        <ColorGradeReveal src={colorgradeImg} />
-      </section>
-      <section className="horizontal-gear-section">
-        <div className="horizontal-gear-track" ref={gearTrackRef}>
+        <div className="camera-panel">
+          <p>More camera content</p>
+        </div>
+
+      </div>
+    </section>
+
+      <section className="gear-section">
+        <div className="gear-grid">
           <div className="gear-panel">
-            <div className="gear-grid">
-              <a className="gear-item" href="https://www.alpinestars.com/products/supertech-r10-element-helmet-black-carbon-bright-red-white-glossy" target="_blank" rel="noopener noreferrer">
-                <img src={helmetImg} alt="R10 Helmet" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.alpinestars.com/products/t-gp-plus-v4-airflow-jacket-black-black" target="_blank" rel="noopener noreferrer">
-                <img src={jacketImg} alt="GP Plus Jacket" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.alpinestars.com/products/gp-pro-rs4-gloves-black-red-fluo-white" target="_blank" rel="noopener noreferrer">
-                <img src={glovesImg} alt="GP RS4 Gloves" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.alpinestars.com/products/supertech-r-vented-boots-2020-black-white-red-fluo" target="_blank" rel="noopener noreferrer">
-                <img src={bootsImg} alt="Supertech Boots" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.uglybrosusa.com/collections/mens/products/moto-jogger-v3-black" target="_blank" rel="noopener noreferrer">
-                <img src={pantsImg} alt="Uglybros Pants" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.alpinestars.com/products/gp-plus-v4-sprint-1pc-leather-suit-red-fluo-mid-red-white" target="_blank" rel="noopener noreferrer">
-                <img src={suitImg} alt="Uglybros Pants" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener noreferrer">
-                <img src={cameraImg} alt="DJI Camera" className="gear-item-img" />
-              </a>
-              <a className="gear-item" href="https://www.dji.com/mic-mini" target="_blank" rel="noopener noreferrer">
-                <img src={micImg} alt="DJI Mic" className="gear-item-img" />
-              </a>
-            </div>
+            <a className="gear-item" href="https://www.alpinestars.com/products/supertech-r10-element-helmet-black-carbon-bright-red-white-glossy" target="_blank" rel="noopener noreferrer">
+              <img src={helmetImg} alt="R10 Helmet" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.alpinestars.com/products/t-gp-plus-v4-airflow-jacket-black-black" target="_blank" rel="noopener noreferrer">
+              <img src={jacketImg} alt="GP Plus Jacket" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.alpinestars.com/products/gp-pro-rs4-gloves-black-red-fluo-white" target="_blank" rel="noopener noreferrer">
+              <img src={glovesImg} alt="GP RS4 Gloves" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.alpinestars.com/products/supertech-r-vented-boots-2020-black-white-red-fluo" target="_blank" rel="noopener noreferrer">
+              <img src={bootsImg} alt="Supertech Boots" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.uglybrosusa.com/collections/mens/products/moto-jogger-v3-black" target="_blank" rel="noopener noreferrer">
+              <img src={pantsImg} alt="Uglybros Pants" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.alpinestars.com/products/gp-plus-v4-sprint-1pc-leather-suit-red-fluo-mid-red-white" target="_blank" rel="noopener noreferrer">
+              <img src={suitImg} alt="Uglybros Pants" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.dji.com/osmo-action-4" target="_blank" rel="noopener noreferrer">
+              <img src={cameraImg} alt="DJI Camera" className="gear-item-img" />
+            </a>
+            <a className="gear-item" href="https://www.dji.com/mic-mini" target="_blank" rel="noopener noreferrer">
+              <img src={micImg} alt="DJI Mic" className="gear-item-img" />
+            </a>
           </div>
         </div>
       </section>
