@@ -290,16 +290,8 @@ return (
           <ColorGradeReveal src={colorgradeImg} />
         </div>
 
-        <div className="camera-panel">
-          <p>More camera content</p>
-        </div>
-
-      </div>
-    </section>
-
-      <section className="gear-section">
-        <div className="gear-grid">
-          <div className="gear-panel">
+       <div className="gear-panel-horizontal">
+          <div className="gear-grid">
             <a className="gear-item" href="https://www.alpinestars.com/products/supertech-r10-element-helmet-black-carbon-bright-red-white-glossy" target="_blank" rel="noopener noreferrer">
               <img src={helmetImg} alt="R10 Helmet" className="gear-item-img" />
             </a>
@@ -326,6 +318,14 @@ return (
             </a>
           </div>
         </div>
+
+        <div className="camera-panel">
+          <p>More camera content</p>
+        </div>
+      </div>
+    </section>
+
+      <section className="gear-section">
       </section>
     </section>
   );
