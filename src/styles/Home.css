@@ -68,7 +68,7 @@ div.home-page {
 
 .horizontal-camera-section {
   position: relative;
-  height: 250vh; /* scroll distance */
+  height: 450vh; /* scroll distance */
   margin-top: -100vh;
 }
 
@@ -263,30 +263,29 @@ div.home-page {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 200px);
-  gap: 50px;
+  gap: 150px;
   width: 90vw;
   max-width: 1200px;
 }
 
 /* Gear item styling */
 .gear-item {
-  width: 200px;
-  height: 200px;
   border: 2px solid #555;
   border-radius: 12px;
+  width: 300px;     
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.4rem;
-  font-weight: 600;
   color: white;
   background: transparent;
   transition: transform 0.25s ease, filter 0.25s ease;
+  margin-left: -75%;
 }
 
 .gear-item-img {
-  width: 200px;     /* adjust as needed */
-  height: 200px;
+  width: 300px;     /* adjust as needed */
+  height: 300px;
   object-fit: contain;
 }
 
