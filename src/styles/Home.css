@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 div.home-page {
   background-color: black;
   color: white;
@@ -296,4 +300,62 @@ div.home-page {
 .gear-section {
   min-height: 100vh;
   padding: 120px 0;
+}
+
+/* FOOTER */
+
+.site-footer {
+  width: 100%;
+  padding: 60px 0;
+  background: black;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  letter-spacing: 3px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-socials img {
+  width: 32px;
+  height: 32px;
+  filter: brightness(1);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.footer-socials img:hover {
+  transform: scale(1.2);
+  filter: brightness(1.4);
+}
+
+.footer-top {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-top img {
+  width: 28px;
+  transition: transform 0.25s ease;
+}
+
+.footer-top:hover img {
+  transform: translateY(-6px);
 }
