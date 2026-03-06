@@ -298,8 +298,8 @@ div.home-page {
 }
 
 .gear-section {
-  min-height: 100vh;
-  padding: 120px 0;
+  min-height: auto;
+  padding: 40px 0;
 }
 
 /* FOOTER */
@@ -316,9 +316,9 @@ div.home-page {
 .footer-content {
   width: 100%;
   max-width: 900px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
 }
 
 .footer-brand {
@@ -326,18 +326,24 @@ div.home-page {
   font-weight: 800;
   color: white;
   letter-spacing: 3px;
-}
-
-.footer-socials {
-  display: flex;
-  gap: 20px;
+  justify-self: center;
+  padding-left: 750%;
 }
 
 .footer-socials img {
   width: 32px;
   height: 32px;
-  filter: brightness(1);
+  padding: 8px;
+  border: 2px solid white;
+  border-radius: 50%;
   transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 20px;
+  justify-self: center;
+  align-items: center;
 }
 
 .footer-socials img:hover {
@@ -349,6 +355,7 @@ div.home-page {
   background: none;
   border: none;
   cursor: pointer;
+  padding-left: 350%;
 }
 
 .footer-top img {
