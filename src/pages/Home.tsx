@@ -109,51 +109,6 @@ const videoIds = videosData.items
     fetchVideos();
   }, []);
 
-  // 🔹 Horizontal scroll logic (same as before)
-  // useEffect(() => {
-  //   let currentX = 0;
-  //   let targetX = 0;
-
-  //   const onScroll = () => {
-  //     if (!trackRef.current) return;
-
-  //     const section = trackRef.current.parentElement!;
-  //     const start = section.offsetTop;
-  //     const end = start + section.offsetHeight - window.innerHeight;
-
-  //     const maxX = window.innerWidth * (VIDEO_PANELS - 1);
-
-  //     if (window.scrollY <= start) {
-  //       targetX = 0;
-  //       return;
-  //     }
-
-  //     if (window.scrollY >= end) {
-  //       targetX = maxX;
-  //       return;
-  //     }
-
-  //     const progress = (window.scrollY - start) / (end - start);
-  //     targetX = progress * maxX;
-
-  //     // 🔹 SNAP PER PANEL
-  //     targetX =
-  //       Math.round(targetX / window.innerWidth) * window.innerWidth;
-  //   };
-
-  //   const smooth = () => {
-  //     if (!trackRef.current) return;
-  //     currentX += (targetX - currentX) * 0.08;
-  //     trackRef.current.style.transform = `translateX(-${currentX}px)`;
-  //     requestAnimationFrame(smooth);
-  //   };
-
-  //   window.addEventListener("scroll", onScroll);
-  //   smooth();
-
-  //   return () => window.removeEventListener("scroll", onScroll);
-  // }, [VIDEO_PANELS]);
-
   const cameraTrackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
