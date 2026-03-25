@@ -89,7 +89,7 @@ const videoIds = videosData.items
         const match = duration.match(/PT(?:(\d+)M)?(?:(\d+)S)?/);
         const minutes = Number(match?.[1] || 0);
         const seconds = Number(match?.[2] || 0);
-        return minutes * 60 + seconds > 60;
+        return minutes * 60 + seconds > 70;
       };
 
       // filter + limit
