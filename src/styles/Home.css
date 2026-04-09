@@ -17,9 +17,9 @@ div.home-page {
 
 .top-logo {
   display: flex;
-  justify-content: center; /* centers horizontally */
-  align-items: center;     /* optional, vertical center if you add height */
-  margin: 1rem 0;          /* spacing from top */
+  justify-content: center; 
+  align-items: center;     
+  margin: 1rem 0;          
 }
 
 .top-logo img {
@@ -39,40 +39,20 @@ div.home-page {
 }
 
 .horizontal-section {
-  height: 200vh; /* controls how long the horizontal scroll lasts */
+  height: 200vh; 
   position: relative;
 }
 
 .horizontal-track {
   display: flex;
-  gap: 2rem; /* keeps spacing between panels */
+  gap: 2rem; 
   align-items: center;
   padding-left: 36vw;
 }
 
-/* Entire section height = amount needed to trigger horizontal scroll
-.horizontal-gear-section {
-  height: 150vh;
-  position: relative;
-  overflow: hidden;
-  background: black;
-  display: flex;
-  align-items: center;
-}
-
-/* Track slides horizontally */
-/* .horizontal-gear-track {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  transform: translateX(0);
-  transition: transform 0.2s ease-out;
-} */ 
-
 .horizontal-camera-section {
   position: relative;
-  height: 450vh; /* scroll distance */
+  height: 450vh; 
   margin-top: -100vh;
 }
 
@@ -81,7 +61,7 @@ div.home-page {
   top: 0;
   height: 100vh;
   display: flex;
-  width: 300vw; /* panels × 100vw */
+  width: 300vw; 
 }
 
 .camera-panel {
@@ -129,7 +109,7 @@ div.home-page {
 .video-wrapper {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
+  padding-top: 56.25%; 
   border-radius: 12px;
   cursor: pointer;
 }
@@ -161,18 +141,18 @@ div.home-page {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 🔥 removes black bars */
+  object-fit: cover;
   opacity: 1;
   transition: opacity 0.35s ease;
 }
 
 .panel {
-  flex-shrink: 0; /* prevents panel from shrinking */
+  flex-shrink: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem; /* space between thumbnail and title */
-  width: 500px; /* thumbnail width */
+  gap: 0.5rem; 
+  width: 500px; 
 }
 
 .video-panel {
@@ -218,6 +198,8 @@ div.home-page {
   pointer-events: auto;
 }
 
+/* CAMERA SETTINGS */
+
 .camera-settings-section {
   opacity: 0;
   transform: translateY(40px);
@@ -242,6 +224,21 @@ div.home-page {
   line-height: 1.5rem;
 }
 
+.camera-info p {
+  transform: translateY(12px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  padding: 2%;
+}
+
+.camera-panel:hover .camera-info p:nth-child(1) { transform: translateY(0); opacity: 1; transition-delay: 0s; }
+.camera-panel:hover .camera-info p:nth-child(2) { transform: translateY(0); opacity: 1; transition-delay: 0.05s; }
+.camera-panel:hover .camera-info p:nth-child(3) { transform: translateY(0); opacity: 1; transition-delay: 0.10s; }
+.camera-panel:hover .camera-info p:nth-child(4) { transform: translateY(0); opacity: 1; transition-delay: 0.15s; }
+.camera-panel:hover .camera-info p:nth-child(5) { transform: translateY(0); opacity: 1; transition-delay: 0.20s; }
+
+/* GEAR */
+
 .gear-panel {
   min-width: 100vw;
   height: 100vh;
@@ -262,7 +259,6 @@ div.home-page {
   justify-content: center;
 }
 
-/* 2 × 4 GRID */
 .gear-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -272,7 +268,6 @@ div.home-page {
   max-width: 1200px;
 }
 
-/* Gear item styling */
 .gear-item {
   border: 2px solid #555;
   border-radius: 12px;
@@ -288,13 +283,13 @@ div.home-page {
 }
 
 .gear-item-img {
-  width: 300px;     /* adjust as needed */
+  width: 300px;    
   height: 300px;
   object-fit: contain;
 }
 
 .gear-item:hover {
-  transform: scale(1.12);     /* pop-out */
+  transform: scale(1.12);    
 }
 
 .gear-section {
@@ -327,7 +322,7 @@ div.home-page {
   color: white;
   letter-spacing: 3px;
   justify-self: center;
-  padding-left: 750%;
+  padding-left: 730%;
 }
 
 .footer-socials img {
