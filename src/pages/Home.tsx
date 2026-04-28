@@ -6,6 +6,7 @@ import type { YouTubeVideo } from "../components/youtube";
 import loadingImg from "../images/loading_img.jpg"; 
 import colorgradeImg from "../images/colorgradeimg.png";
 import ColorGradeReveal from "../components/colorgrade";
+import Footer from "../components/footer";
 import helmetImg from "../images/helmet.png";
 import jacketImg from "../images/jacket.png";
 import glovesImg from "../images/gloves.png";
@@ -14,6 +15,9 @@ import pantsImg from "../images/pants.png";
 import suitImg from "../images/suit.png";
 import cameraImg from "../images/camera.png";
 import micImg from "../images/micmini.png";
+import youtubeImg from "../images/youtube.png";
+import tiktokImg from "../images/tiktok.png";
+import arrowUp from "../images/arrowup.png";
 //import CameraSettingsSection from "../components/camerasettings";
 
 // const PANELS = 6;
@@ -23,13 +27,13 @@ const CHANNEL_ID = "UCrcsK5kCyBSncGzdwWLGoRQ";
 
 const Home = () => {
   const trackRef = useRef<HTMLDivElement>(null);
-  const cameraRef = useRef<HTMLDivElement>(null);
+  // const cameraRef = useRef<HTMLDivElement>(null);
   const gearTrackRef = useRef<HTMLDivElement>(null);
 
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [hovered, setHovered] = useState(false);
-  const [showCamera, setShowCamera] = useState(false);
-
+  // const [showCamera, setShowCamera] = useState(false);
+  
   const chunkVideos = (videos: YouTubeVideo[], size: number) => {
   const chunks = [];
     for (let i = 0; i < videos.length; i += size) {
@@ -108,6 +112,51 @@ const videoIds = videosData.items
 
     fetchVideos();
   }, []);
+
+  // 🔹 Horizontal scroll logic (same as before)
+  // useEffect(() => {
+  //   let currentX = 0;
+  //   let targetX = 0;
+
+  //   const onScroll = () => {
+  //     if (!trackRef.current) return;
+
+  //     const section = trackRef.current.parentElement!;
+  //     const start = section.offsetTop;
+  //     const end = start + section.offsetHeight - window.innerHeight;
+
+  //     const maxX = window.innerWidth * (VIDEO_PANELS - 1);
+
+  //     if (window.scrollY <= start) {
+  //       targetX = 0;
+  //       return;
+  //     }
+
+  //     if (window.scrollY >= end) {
+  //       targetX = maxX;
+  //       return;
+  //     }
+
+  //     const progress = (window.scrollY - start) / (end - start);
+  //     targetX = progress * maxX;
+
+  //     // 🔹 SNAP PER PANEL
+  //     targetX =
+  //       Math.round(targetX / window.innerWidth) * window.innerWidth;
+  //   };
+
+  //   const smooth = () => {
+  //     if (!trackRef.current) return;
+  //     currentX += (targetX - currentX) * 0.08;
+  //     trackRef.current.style.transform = `translateX(-${currentX}px)`;
+  //     requestAnimationFrame(smooth);
+  //   };
+
+  //   window.addEventListener("scroll", onScroll);
+  //   smooth();
+
+  //   return () => window.removeEventListener("scroll", onScroll);
+  // }, [VIDEO_PANELS]);
 
   const cameraTrackRef = useRef<HTMLDivElement>(null);
 
@@ -191,8 +240,27 @@ const videoIds = videosData.items
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+
+  const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+  };
+
 return (
   <section className="home-page">
+    <nav className="section-nav">
+      <button onClick={() => trackRef.current?.closest('section')?.scrollIntoView({ behavior: 'smooth' })}>
+        Videos
+      </button>
+      <button onClick={() => cameraTrackRef.current?.closest('section')?.scrollIntoView({ behavior: 'smooth' })}>
+        Camera
+      </button>
+      <button onClick={() => gearTrackRef.current?.closest('section')?.scrollIntoView({ behavior: 'smooth' })}>
+        Gear
+      </button>
+    </nav>
     <div className="top-logo">
       <a href="https://www.youtube.com/@mxclur" target="_blank" rel="noopener noreferrer">
         <img src={loadingImg} alt="Logo" />
@@ -236,14 +304,15 @@ return (
       <div className="horizontal-camera-track" ref={cameraTrackRef}>
         <div className="camera-panel">
           <div className="camera-info">
-            <p>Camera Settings</p>
+            * <p>Camera Settings</p>
             <p>🎥 4K 30 FPS</p>
             <p>⏱ 1/60 Shutter Angle</p>
             <p>🌡 ISO 100 ~ 800</p>
-            <p>🪨 RockSteady: Off</p>
+            <p>🪨 RockSteady: Off</p> 
           </div>
           <ColorGradeReveal src={colorgradeImg} />
         </div>
+        
 
        <div className="gear-panel-horizontal">
           <div className="gear-grid">
@@ -279,11 +348,35 @@ return (
         </div>
       </div>
     </section>
-
       <section className="gear-section">
       </section>
+        <Footer/>
+        <div className="footer-content">
+
+          <div className="footer-socials">
+            <a href="https://www.youtube.com/@mxclur" target="_blank" rel="noopener noreferrer">
+              <img src={youtubeImg} alt="YouTube" />
+            </a>
+
+            <a href="https://www.tiktok.com/@mxclur" target="_blank" rel="noopener noreferrer">
+              <img src={tiktokImg} alt="TikTok" />
+            </a>
+          </div>
+
+          <div className="footer-brand">
+            MXCLUR
+          </div>
+
+          <button className="footer-top" onClick={scrollToTop}>
+            <img src={arrowUp} alt="Back to top" />
+          </button>
+
+        </div>
     </section>
   );
 };
 
 export default Home;
+
+
+
